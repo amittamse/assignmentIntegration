@@ -11,9 +11,9 @@
  * @History     :  Created on Nov 4, 2017 by Amit Tamse //Mostly the GIT path
  */
 @RestResource(urlMapping='/createOrders/*')
-global without sharing class OrderProcessingWebService {
+global class OrderProcessingWebService {
     
-    private final static String CREATE_NEW_ORDERS = 'ORDER_CREATE';
+    private static OrderProcessingConstant orderConstants = new OrderProcessingConstant();
     
     /**
      * @Desc: This class is used contain the REST request for the service
@@ -119,7 +119,7 @@ global without sharing class OrderProcessingWebService {
             
             
             //Creation of a new orders - We need to check to avoid duplicacy of the data
-            if(orderRequest != null && orderRequest.operationType == CREATE_NEW_ORDERS){
+            if(orderRequest != null && orderRequest.operationType == orderConstants.CREATE_NEW_ORDERS){
                 List<OderLineItem> orderList = orderRequest.orderList;
                 List<Account> accList = new List<Account>();
                 Map<String, Contact> emailContactMap = new Map<String, Contact>();
