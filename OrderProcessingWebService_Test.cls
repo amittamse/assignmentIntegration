@@ -10,13 +10,15 @@
 private class OrderProcessingWebService_Test {
    
     private static List<OrderProcessingWebService.OderLineItem> orderLineItems = new List<OrderProcessingWebService.OderLineItem>();
+    
     //  -------------------------------------------------------------------------------------------------------------------
-    //  Test Setup
+    //  Tests
     //  -------------------------------------------------------------------------------------------------------------------
-   /**
-    * @Desc: Creates the test data for the test session.
+    
+    /**
+    * @Desc: This method is used to test the creation of the Account, Contact and Opportunity.
     */
-    @testSetup private static void setupTestData(){
+    @isTest public static void testCreateOrdersFromPayloadWithPayload(){
         
         //Line Items
         OrderProcessingWebService.OderLineItem orderLineItem = new OrderProcessingWebService.OderLineItem();
@@ -45,7 +47,7 @@ private class OrderProcessingWebService_Test {
         orderLineItem1.oStage = 'Reserved';
         orderLineItems.add(orderLineItem1);
 		
-	OrderProcessingWebService.OderLineItem orderLineItem2 = new OrderProcessingWebService.OderLineItem();
+		OrderProcessingWebService.OderLineItem orderLineItem2 = new OrderProcessingWebService.OderLineItem();
         orderLineItem2.oFirstName = 'Kiran';
         orderLineItem2.oLastName = 'Tamse';
         orderLineItem2.oEmail = 'KIRAN.TAMSE@testing.com';
@@ -69,28 +71,17 @@ private class OrderProcessingWebService_Test {
         orderLineItem3.oCountryCode = 'US';
         orderLineItem3.oZip = '95136';
         orderLineItem3.oStage = 'Reserved';
-        orderLineItems.add(orderLineItem3);  
+        orderLineItems.add(orderLineItem3); 
         
-    }
-    
-    //  -------------------------------------------------------------------------------------------------------------------
-    //  Tests
-    //  -------------------------------------------------------------------------------------------------------------------
-    
-    /**
-    * @Desc: This method is used to test the creation of the Account, Contact and Opportunity.
-    */
-    @isTest public static void testCreateOrdersFromPayload(){
         Test.startTest();
-            OrderProcessingWebService.OrderResponseCls agmtResponce = new OrderProcessingWebService.OrderResponseCls();
-            OrderProcessingWebService.OrderRequestCls reqst = new OrderProcessingWebService.OrderRequestCls();
+        	OrderProcessingWebService.OrderRequestCls reqst = new OrderProcessingWebService.OrderRequestCls();
             reqst.payloadSize = '4';
             reqst.payLoadId = '123456789101112';
             reqst.operationType = 'ORDER_CREATE'; 
         	reqst.orderList = orderLineItems;
      		
-            //Serialize the request data 
-            String JsonMsg = JSON.serialize(reqst);
+        	//Serialize the request data 
+        	String JsonMsg = JSON.serialize(reqst);
                    
             RestRequest req = new RestRequest(); 
             RestResponse res = new RestResponse();
@@ -100,6 +91,43 @@ private class OrderProcessingWebService_Test {
             RestContext.request = req;
             RestContext.response = res;
             req.requestBody = Blob.valueof(JsonMsg);
+            OrderProcessingWebService.createOrdersFromPayload();
+        	Account acc = [Select Email__c from Account where Email__c = 'TAMSE@testing.com' LIMIT 1];
+        	System.assertEquals(acc.Email__c, 'tamse@testing.com');
+        Test.stopTest();
+    }
+    
+    /**
+    * @Desc: This method is used to test the creation of the Account, Contact and Opportunity with No payload.
+    */
+    @isTest public static void testCreateOrdersFromPayloadWithNoPayload(){
+        Test.startTest();
+        	       
+            RestRequest req = new RestRequest(); 
+            RestResponse res = new RestResponse();
+     		
+            req.requestURI = 'https://'+URL.getSalesforceBaseUrl().getHost()+'/services/apexrest/createOrders';  
+            req.httpMethod = 'POST';
+            RestContext.request = req;
+            RestContext.response = res;
+            OrderProcessingWebService.createOrdersFromPayload();
+        Test.stopTest();
+    }
+    
+    /**
+    * @Desc: This method is used to test the creation of the Account, Contact and Opportunity with Empty Payload
+    */
+    @isTest public static void testCreateOrdersFromPayloadWithEmptyPayLoad(){
+        Test.startTest();
+        	       
+            RestRequest req = new RestRequest(); 
+            RestResponse res = new RestResponse();
+     		
+            req.requestURI = 'https://'+URL.getSalesforceBaseUrl().getHost()+'/services/apexrest/createOrders';  
+            req.httpMethod = 'POST';
+            RestContext.request = req;
+            RestContext.response = res;
+            req.requestBody = Blob.valueof('');
             OrderProcessingWebService.createOrdersFromPayload();
         Test.stopTest();
     }
