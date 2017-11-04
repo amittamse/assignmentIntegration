@@ -36,7 +36,7 @@ global without sharing class OrderProcessingWebService {
      * to the service method.
      */
     global class OrderResponseCls{
-	global String payLoadId {get; set;}
+		global String payLoadId {get; set;}
         global String message {get; set;}
         
         global OrderResponseCls(){}
@@ -95,11 +95,12 @@ global without sharing class OrderProcessingWebService {
             
             //It can be done in two ways - JSON.deserializeUntyped and JSON.deserialize
             //Map<String, Object> rawData = (Map<String, Object>) JSON.deserializeUntyped(request.requestBody.toString());
-            //System.debug(LoggingLevel.INFO, 'rawData'+ rawData);
+            System.debug(LoggingLevel.INFO, 'Request body'+ request.requestBody.toString());
             
             //Deserialize the payload from the input - Standard method to avoid errors
             if(request.requestBody.toString() != ''){
                 orderRequest = (OrderRequestCls)JSON.deserialize(request.requestBody.toString(), OrderRequestCls.class);
+                System.debug(LoggingLevel.INFO, 'orderRequest' + orderRequest);
             } else {
                 // If no operation is passed to the service for handling, respond back with an error
                 ErrorResponse errorResponse = new ErrorResponse();
