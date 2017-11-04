@@ -36,7 +36,7 @@ global without sharing class OrderProcessingWebService {
      * to the service method.
      */
     global class OrderResponseCls{
-		global String payLoadId {get; set;}
+	global String payLoadId {get; set;}
         global String message {get; set;}
         
         global OrderResponseCls(){}
