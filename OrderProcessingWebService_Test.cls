@@ -45,7 +45,7 @@ private class OrderProcessingWebService_Test {
         orderLineItem1.oStage = 'Reserved';
         orderLineItems.add(orderLineItem1);
 		
-		OrderProcessingWebService.OderLineItem orderLineItem2 = new OrderProcessingWebService.OderLineItem();
+	OrderProcessingWebService.OderLineItem orderLineItem2 = new OrderProcessingWebService.OderLineItem();
         orderLineItem2.oFirstName = 'Kiran';
         orderLineItem2.oLastName = 'Tamse';
         orderLineItem2.oEmail = 'KIRAN.TAMSE@testing.com';
@@ -82,15 +82,15 @@ private class OrderProcessingWebService_Test {
     */
     @isTest public static void testCreateOrdersFromPayload(){
         Test.startTest();
-        	OrderProcessingWebService.OrderResponseCls agmtResponce = new OrderProcessingWebService.OrderResponseCls();
-           	OrderProcessingWebService.OrderRequestCls reqst = new OrderProcessingWebService.OrderRequestCls();
+            OrderProcessingWebService.OrderResponseCls agmtResponce = new OrderProcessingWebService.OrderResponseCls();
+            OrderProcessingWebService.OrderRequestCls reqst = new OrderProcessingWebService.OrderRequestCls();
             reqst.payloadSize = '4';
             reqst.payLoadId = '123456789101112';
             reqst.operationType = 'ORDER_CREATE'; 
         	reqst.orderList = orderLineItems;
      		
-        	//Serialize the request data 
-        	String JsonMsg = JSON.serialize(reqst);
+            //Serialize the request data 
+            String JsonMsg = JSON.serialize(reqst);
                    
             RestRequest req = new RestRequest(); 
             RestResponse res = new RestResponse();
